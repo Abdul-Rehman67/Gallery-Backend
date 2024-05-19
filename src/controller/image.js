@@ -1,7 +1,7 @@
 const { response } = require("../dto/send.response");
 const Image = require("../models/Image");
 const User = require("../models/User");
-const { uploadImageService } = require("../services/image");
+const { uploadImageService, getImagesOFUser, deleteImageService } = require("../services/image");
 
 
 
@@ -9,11 +9,6 @@ const uploadImage = async (req, res) => {
     try{
 
         console.log("req.body",req.body)
-        const file = req.file;
-        const isPrivate = req.body.isPrivate === 'true';
-        console.log(file)
-        console.log(req.id)
-        // const result = await uploadImageService(file,req.id,isPrivate) 
         const result = await uploadImageService(req) 
         console.log(result);
         if(result.uploaded){
@@ -32,6 +27,27 @@ const uploadImage = async (req, res) => {
     }
    
 };
+const getImageController = async (req,res) =>{
+const id = req.params.id;
+const result = await getImagesOFUser(id)
+  if (result) {
+    return res.send(response(true, "Data Found", { result }));
+  } else {
+    return res.send(response(false, "Not Found"));
+  }
+
+}
+
+const deleteImageController = async (req,res) =>{
+    const id = req.params.id
+    let deleteImage = await deleteImageService(id);
+    if (deleteImage) {
+        return res.send(response(true, "Delete",{}));
+      } else {
+        return res.send(response(false, "Not Found"));
+      }
+
+}
   
-  module.exports = { uploadImage };
+  module.exports = { uploadImage,getImageController,deleteImageController };
   
