@@ -5,6 +5,7 @@ const { connectDB } = require('./src/db/config')
 const path = require('path')
 const authRoute = require('./src/routes/auth')
 const imageRoute = require('./src/routes/images')
+const userRoute = require('./src/routes/user')
 dotenv.config()
 const app = express()
 const port = process.env.PORT
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRoute)
 app.use('/image',imageRoute )
+app.use('/user',userRoute )
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
   connectDB()

@@ -22,8 +22,8 @@ const userChecker = async (req, res, next) => {
       return res.status(401).send({ error: "invalid token" });
     }
 
-    req.id = tokenRecord[0]._id.toString();
-    console.log(req.email)
+    req.id = decoded.sub;
+    console.log(req.id)
     next();
   } catch (err) {
     console.log(err);
