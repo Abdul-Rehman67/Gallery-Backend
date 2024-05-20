@@ -1,10 +1,10 @@
 const { response } = require("../dto/send.response");
-const { getUserByEmail, getAllUser } = require("../services/userService");
+const { getUserByEmail, getAllUser, getUserById, updateUserService } = require("../services/userService");
 
 const getUserController = async (req, res) => {
   const id = req.params.id;
   console.log(id)
-  let data = await getUserByEmail(id);
+  let data = await getUserById(id);
   console.log(data);
   if (data) {
     return res.send(response(true, "Data Found", { data: data }));
@@ -22,9 +22,18 @@ const getAllUserController = async (req, res) => {
   }
 };
 const updateUser = async (req, res) => {
-  const emailId = req.email;
-  const payload = req.body;
-  // console.log("payload", payload);
+  console.log(req.body)
+  const id = req.body.userData._id
+  const payload = req.body.userData
+  const update =await updateUserService(id,payload)
+  if(update.updated){
+    return res.send(response(true, "User Updated"));
+  }
+  else{
+    return res.send(response(false, "Failed to update profile"));
+
+  }
+
  
 };
 module.exports = { getUserController, updateUser,getAllUserController };
